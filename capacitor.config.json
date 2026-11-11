@@ -1,0 +1,13 @@
+{
+  "appId": "com.shop.details",
+  "appName": "Shop Details",
+  "webDir": "www",
+  "plugins": {
+    "CapacitorHttp": {
+      "enabled": true
+    },
+    "CapacitorSQLite": {
+      "androidIsEncryption": false
+    }
+  }
+}

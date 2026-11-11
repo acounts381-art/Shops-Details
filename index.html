@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Shop Details</title>
+<style>
+:root{--bg:#f4f6f8;--card:#fff;--tx:#1b2430;--mu:#6b7785;--pr:#0f766e;--prt:#fff;--bd:#d8dee5;--hd:#0f766e;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#10161c;--card:#19222b;--tx:#e8edf2;--mu:#93a1b0;--pr:#2dd4bf;--prt:#06231f;--bd:#2c3945;--hd:#134e4a}}
+:root[data-theme="dark"]{--bg:#10161c;--card:#19222b;--tx:#e8edf2;--mu:#93a1b0;--pr:#2dd4bf;--prt:#06231f;--bd:#2c3945;--hd:#134e4a}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--tx);font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-size:16px}
+header{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;display:flex;align-items:center;gap:12px;background:var(--hd);color:#fff;padding:12px 14px}
+header h1{font-size:18px;margin:0;font-weight:600}
+.burger{background:none;border:0;color:#fff;font-size:26px;line-height:1;padding:2px 6px;cursor:pointer}
+.scrim{position:fixed;inset:0;background:rgba(0,0,0,.45);display:none;z-index:9}
+.drawer{position:fixed;top:0;bottom:0;left:0;width:250px;max-width:80%;background:var(--card);z-index:10;transform:translateX(-100%);transition:transform .2s;padding:calc(env(safe-area-inset-top,0px) + 18px) 0}
+.open .drawer{transform:none}.open .scrim{display:block}
+.drawer h2{margin:0 18px 12px;font-size:16px;color:var(--mu)}
+.drawer button{display:block;width:100%;text-align:left;background:none;border:0;color:var(--tx);font-size:17px;padding:14px 18px;cursor:pointer}
+.drawer button.on{background:var(--bg);color:var(--pr);font-weight:600}
+main{padding:14px;max-width:760px;margin:0 auto}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:14px}
+label{display:block;font-size:12px;color:var(--mu);margin:6px 0 1px}
+label:first-child{margin-top:0}
+input,select{width:100%;height:30px;padding:2px 8px;font-size:15px;border:1px solid var(--bd);border-radius:8px;background:var(--bg);color:var(--tx)}
+input:focus,select:focus{outline:2px solid var(--pr);outline-offset:0}
+.save{width:100%;margin-top:14px;padding:10px;font-size:17px;font-weight:600;border:0;border-radius:10px;background:var(--pr);color:var(--prt);cursor:pointer}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.grid label{margin-top:0}
+.full{grid-column:1/-1}
+.meta{font-size:13px;color:var(--mu);margin:10px 2px}
+.wrap{overflow-x:auto;border:1px solid var(--bd);border-radius:12px;background:var(--card)}
+table{border-collapse:collapse;width:100%;min-width:1120px;font-size:14px}
+th,td{padding:10px;text-align:left;border-bottom:1px solid var(--bd);white-space:nowrap}
+th{background:var(--bg);color:var(--mu);font-weight:600;position:sticky;top:0}
+td.ad{white-space:normal;min-width:140px}
+.empty{padding:22px;text-align:center;color:var(--mu)}
+.toast{position:fixed;left:50%;bottom:calc(env(safe-area-inset-bottom,0px) + 22px);transform:translateX(-50%);background:#111;color:#fff;padding:10px 16px;border-radius:20px;font-size:14px;opacity:0;pointer-events:none;transition:opacity .2s;z-index:20}
+.toast.show{opacity:1}
+.hide{display:none}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.gps{margin:8px 0 2px}
+#rf{height:30px;padding:0 8px;border:1px solid var(--pr);background:none;color:var(--pr);border-radius:8px;font-size:14px;font-weight:600;cursor:pointer}
+.g3{grid-template-columns:1fr 1fr auto;align-items:end;gap:8px}
+.g3 input{padding:4px 6px;font-size:14px}
+.bar{display:flex;justify-content:space-between;align-items:center;gap:8px}.bar .meta{margin:10px 2px}
+#ex{height:34px;padding:0 14px;border:0;border-radius:8px;background:var(--pr);color:var(--prt);font-size:14px;font-weight:600;cursor:pointer}
+#lu{display:block;font-size:10px;line-height:11px;color:var(--mu);text-align:center}
+.rc{display:flex;flex-direction:column;gap:3px}
+.pic{display:flex;align-items:center;justify-content:center;height:110px;margin-bottom:8px;border:1.5px dashed var(--bd);border-radius:10px;background:var(--bg);color:var(--mu);font-size:14px;overflow:hidden;cursor:pointer}
+.pic img{width:100%;height:100%;object-fit:cover}
+.th{width:34px;height:34px;object-fit:cover;border-radius:6px;display:block}
+input:disabled{opacity:.85}
+.ck{width:20px;height:20px;flex:none;padding:0;margin:0;accent-color:var(--pr)}
+.cw{display:flex;align-items:center;gap:8px}
+.cw select{flex:1;min-width:0}
+.r2{grid-template-columns:1fr auto}.r2>div{min-width:0}
+#f-beat{width:auto;min-width:64px;flex:none}
+.row input{padding:4px 6px}
+textarea{display:block;width:100%;min-height:30px;padding:5px 8px;font-size:15px;font-family:inherit;line-height:1.3;border:1px solid var(--bd);border-radius:8px;background:var(--bg);color:var(--tx);resize:vertical;overflow:hidden}
+textarea:focus{outline:2px solid var(--pr);outline-offset:0}
+.setc{margin-bottom:12px}.setc h3{margin:0 0 8px;font-size:15px}
+.add{display:flex;gap:8px}.add button{padding:0 18px;border:0;border-radius:8px;background:var(--pr);color:var(--prt);font-size:15px;font-weight:600;cursor:pointer}
+.setc ul{list-style:none;margin:8px 0 0;padding:0}.setc li{display:flex;justify-content:space-between;align-items:center;padding:6px 2px;border-bottom:1px solid var(--bd)}
+.setc li button{background:none;border:0;color:#d33;font-size:22px;line-height:1;padding:0 8px;cursor:pointer}
+</style>
+</head>
+<body>
+<div id="app">
+<header><button class="burger" id="bg" aria-label="Menu">&#9776;</button><h1 id="ttl">Shop Entry</h1></header>
+<div class="scrim" id="sc"></div>
+<nav class="drawer"><h2>Menu</h2><button id="m-entry" class="on">Shop Entry</button><button id="m-rep">Report</button><button id="m-set">Setup</button></nav>
+
+<main>
+<section id="v-entry" class="card">
+<div class="pic" id="pic"><img id="pimg" class="hide" alt=""><span id="ptx">&#128247; Tap to take photo</span></div>
+<input type="file" id="pfile" accept="image/*" capture="environment" class="hide">
+<div class="row g3"><div><label for="f-lat">Latitude</label><input id="f-lat" disabled></div>
+<div><label for="f-lng">Longitude</label><input id="f-lng" disabled></div><div class="rc"><span id="lu">Last update<br>--</span><button id="rf" type="button">Refresh</button></div></div>
+<div class="row"><div><label for="f-date">Date</label><input type="date" id="f-date"></div>
+<div><label for="f-depo">Depo</label><div class="cw"><select id="f-depo"></select><input type="checkbox" id="k-depo" class="ck" checked></div></div></div>
+<div class="row r2"><div><label for="f-dr">Dr Name</label><div class="cw"><select id="f-dr"></select><input type="checkbox" id="k-dr" class="ck" checked></div></div>
+<div><label for="f-beat">Beat</label><div class="cw"><select id="f-beat"></select><input type="checkbox" id="k-beat" class="ck" checked></div></div></div>
+<label for="f-shop">Shop Name</label><input id="f-shop" autocomplete="off">
+<label for="f-addr">Address</label><textarea id="f-addr" rows="1"></textarea>
+<div class="row"><div><label for="f-mob">Mobile</label><input id="f-mob" inputmode="numeric" maxlength="11" placeholder="03XXXXXXXXX"></div>
+<div><label for="f-cnic">CNIC</label><input id="f-cnic" inputmode="numeric" maxlength="15" placeholder="XXXXX-XXXXXXX-X"></div></div>
+<label for="f-rem">Remarks</label><textarea id="f-rem" rows="1"></textarea>
+<button class="save" id="save">Save</button>
+
+</section>
+
+<section id="v-rep" class="hide">
+<div class="card grid">
+<div><label for="r-date">Date</label><input type="date" id="r-date"></div>
+<div><label for="r-depo">Depo</label><select id="r-depo"></select></div>
+<div><label for="r-dr">Dr Name</label><select id="r-dr"></select></div>
+<div><label for="r-beat">Beat</label><select id="r-beat"></select></div>
+<div class="full"><label for="r-q">Search</label><input id="r-q" type="search" placeholder="Shop, address, mobile, CNIC"></div>
+</div>
+<div class="bar"><div class="meta" id="cnt"></div><button id="ex" type="button">Export Excel</button></div>
+<div class="wrap"><table>
+<thead><tr><th>Sr</th><th>Date</th><th>Shop Name</th><th>Address</th><th>Mobile</th><th>CNIC</th><th>Depo</th><th>Dr Name</th><th>Beat</th><th>Latitude</th><th>Longitude</th><th>Pic</th><th>Remarks</th></tr></thead>
+<tbody id="tb"></tbody></table><div class="empty hide" id="em">No records found</div></div>
+</section>
+
+<section id="v-set" class="hide">
+<div class="card setc"><h3>Depo List</h3><div class="add"><input id="s-depo" placeholder="Depo name" autocomplete="off"><button data-k="depo">Add</button></div><ul id="u-depo"></ul></div>
+<div class="card setc"><h3>Dr Name</h3><div class="add"><select id="s-drdepo"></select></div><div class="add" style="margin-top:8px"><input id="s-dr" placeholder="Dr name" autocomplete="off"><button data-k="dr">Add</button></div><ul id="u-dr"></ul></div>
+<div class="card setc"><h3>Beat List</h3><div class="add"><input id="s-beat" placeholder="Beat" autocomplete="off"><button data-k="beat">Add</button></div><ul id="u-beat"></ul></div>
+</section>
+</main>
+<div class="toast" id="toast"></div>
+</div>
+
+<script src="xlsx.full.min.js"></script>
+<script>
+(function(){
+var KEY="shop_details_v1",SKEY0="shop_setup_v1";
+var SQ=(window.Capacitor&&window.Capacitor.Plugins&&window.Capacitor.Plugins.CapacitorSQLite)||null,DBN="shopdb",useSQL=false;
+var cacheShops=[],cacheSet={depo:[],dr:[],beat:["A","B","C"]},q=Promise.resolve();
+function enq(fn){q=q.then(fn).catch(function(e){console.error(e)})}
+function dbq(sql,vals){return SQ.query({database:DBN,statement:sql,values:vals||[],readonly:false,isSQL92:true}).then(function(r){return(r.values||[]).filter(function(x){return !x.ios_columns})})}
+function dbr(sql,vals){return SQ.run({database:DBN,statement:sql,values:vals||[],transaction:true,readonly:false,isSQL92:true})}
+async function dbInit(){
+ if(SQ){
+  try{
+   try{await SQ.createConnection({database:DBN,version:1,encrypted:false,mode:"no-encryption",readonly:false})}catch(e){}
+   await SQ.open({database:DBN,readonly:false});
+   await SQ.execute({database:DBN,statements:"CREATE TABLE IF NOT EXISTS shops(id INTEGER PRIMARY KEY AUTOINCREMENT,date TEXT,depo TEXT,dr TEXT,beat TEXT,shop TEXT,addr TEXT,mob TEXT,cnic TEXT,lat TEXT,lng TEXT,photo TEXT,rem TEXT);CREATE TABLE IF NOT EXISTS setup(id INTEGER PRIMARY KEY AUTOINCREMENT,kind TEXT,name TEXT,depo TEXT);CREATE TABLE IF NOT EXISTS meta(k TEXT PRIMARY KEY,v TEXT);",transaction:true,readonly:false,isSQL92:true});
+   try{await SQ.execute({database:DBN,statements:"ALTER TABLE shops ADD COLUMN photo TEXT;",transaction:true,readonly:false,isSQL92:true})}catch(e){}
+   try{await SQ.execute({database:DBN,statements:"ALTER TABLE shops ADD COLUMN rem TEXT;",transaction:true,readonly:false,isSQL92:true})}catch(e){}
+   var m=await dbq("SELECT v FROM meta WHERE k=?",["seeded"]);
+   if(!m.length){for(var b of["A","B","C"])await dbr("INSERT INTO setup(kind,name,depo) VALUES (?,?,?)",["beat",b,""]);await dbr("INSERT INTO meta(k,v) VALUES (?,?)",["seeded","1"])}
+   cacheShops=await dbq("SELECT date,depo,dr,beat,shop,addr,mob,cnic,lat,lng,photo,rem FROM shops ORDER BY id");
+   var rows=await dbq("SELECT kind,name,depo FROM setup ORDER BY id");
+   cacheSet={depo:[],dr:[],beat:[]};
+   rows.forEach(function(x){if(x.kind==="dr")cacheSet.dr.push({n:x.name,d:x.depo||""});else if(cacheSet[x.kind])cacheSet[x.kind].push(x.name)});
+   useSQL=true;return;
+  }catch(e){console.error(e)}
+ }
+ try{var r=localStorage.getItem(KEY);if(r)cacheShops=JSON.parse(r);var s=localStorage.getItem(SKEY0);if(s)cacheSet=JSON.parse(s)}catch(e){}
+}
+function load(){return cacheShops}
+function addShop(r){
+ cacheShops.push(r);
+ if(useSQL)enq(function(){return dbr("INSERT INTO shops(date,depo,dr,beat,shop,addr,mob,cnic,lat,lng,photo,rem) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)",[r.date,r.depo,r.dr,r.beat,r.shop,r.addr,r.mob,r.cnic,r.lat,r.lng,r.photo||"",r.rem||""])});
+ else try{localStorage.setItem(KEY,JSON.stringify(cacheShops))}catch(e){}
+}
+var $=function(i){return document.getElementById(i)};
+function esc(s){return String(s).replace(/[&<>"]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
+function today(){var d=new Date();return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0")}
+function toast(t){var e=$("toast");e.textContent=t;e.className="toast show";setTimeout(function(){e.className="toast"},2000)}
+function uniq(a,k){var s={};a.forEach(function(x){if(x[k])s[x[k]]=1});return Object.keys(s).sort()}
+var curRows=[];
+function nd(a){return(a||[]).map(function(x){return typeof x==="string"?{n:x,d:""}:x})}
+function sload(){return{depo:cacheSet.depo.slice(),dr:nd(cacheSet.dr).map(function(x){return{n:x.n,d:x.d}}),beat:cacheSet.beat.slice()}}
+function lst(k){var s=sload()[k];if(k!=="dr")return s;var d=$("f-depo").value;return s.filter(function(x){return d&&x.d===d}).map(function(x){return x.n})}
+function sstore(o){
+ cacheSet=o;
+ if(useSQL)enq(async function(){
+  await SQ.execute({database:DBN,statements:"DELETE FROM setup;",transaction:true,readonly:false,isSQL92:true});
+  var ins="INSERT INTO setup(kind,name,depo) VALUES (?,?,?)";
+  for(var k of["depo","dr","beat"])for(var v of o[k])await dbr(ins,[k,k==="dr"?v.n:v,k==="dr"?v.d:""]);
+ });
+ else try{localStorage.setItem(SKEY0,JSON.stringify(o))}catch(e){}
+}
+function opts(k,a){var s=sload()[k];if(k==="dr")s=s.map(function(x){return x.n});s=s.filter(function(v,i){return s.indexOf(v)===i});uniq(a,k).forEach(function(v){if(s.indexOf(v)<0)s.push(v)});return s}
+function renderSet(){var s=sload();var sd=$("s-drdepo"),c=sd.value;sd.innerHTML='<option value="">Select Depo</option>'+s.depo.map(function(v){return '<option>'+esc(v)+'</option>'}).join("");sd.value=c;["depo","dr","beat"].forEach(function(k){$("u-"+k).innerHTML=s[k].map(function(v,i){return '<li><span>'+esc(k==="dr"?v.n+(v.d?" - "+v.d:""):v)+'</span><button data-k="'+k+'" data-i="'+i+'" aria-label="Delete">&times;</button></li>'}).join("")||'<li><span style="color:var(--mu)">Empty</span></li>'})}
+
+function fillLists(){
+ var a=load();
+ [["depo","f-depo"],["dr","f-dr"],["beat","f-beat"]].forEach(function(p){
+  var el=$(p[1]),cur=el.value;el.innerHTML='<option value="">Select</option>'+lst(p[0]).map(function(v){return '<option>'+esc(v)+'</option>'}).join("");el.value=cur;
+ });
+}
+function fillFilters(){
+ var a=load();
+ [["depo","r-depo","All Depo"],["dr","r-dr","All Dr Name"],["beat","r-beat","All Beat"]].forEach(function(p){
+  var el=$(p[1]),cur=el.value;
+  el.innerHTML='<option value="">'+p[2]+'</option>'+opts(p[0],a).map(function(v){return '<option>'+esc(v)+'</option>'}).join("");
+  el.value=cur;
+ });
+}
+function render(){
+ var a=load(),d=$("r-date").value,de=$("r-depo").value,dr=$("r-dr").value,be=$("r-beat").value,q=$("r-q").value.trim().toLowerCase();
+ var rows=a.filter(function(x){
+  if(d&&x.date!==d)return false;
+  if(de&&x.depo!==de)return false;
+  if(dr&&x.dr!==dr)return false;
+  if(be&&x.beat!==be)return false;
+  if(q&&(x.shop+" "+x.addr+" "+x.mob+" "+x.cnic).toLowerCase().indexOf(q)<0)return false;
+  return true;
+ });
+ $("tb").innerHTML=rows.map(function(x,i){
+  return "<tr><td>"+(i+1)+"</td><td>"+esc(x.date||"")+"</td><td>"+esc(x.shop)+'</td><td class="ad">'+esc(x.addr)+"</td><td>"+esc(x.mob)+"</td><td>"+esc(x.cnic)+"</td><td>"+esc(x.depo)+"</td><td>"+esc(x.dr)+"</td><td>"+esc(x.beat)+"</td><td>"+esc(x.lat||"")+"</td><td>"+esc(x.lng||"")+"</td><td>"+(x.photo?'<img class="th" src="'+x.photo+'">':"")+'</td><td class="ad">'+esc(x.rem||"")+"</td></tr>";
+ }).join("");
+ $("em").className="empty"+(rows.length?" hide":"");
+ $("cnt").textContent=rows.length+" of "+a.length+" records";curRows=rows;
+}
+function show(v){
+ $("v-entry").className=v==="entry"?"card":"hide";
+ $("v-rep").className=v==="rep"?"":"hide";
+ $("v-set").className=v==="set"?"":"hide";
+ $("m-entry").className=v==="entry"?"on":"";
+ $("m-rep").className=v==="rep"?"on":"";
+ $("m-set").className=v==="set"?"on":"";
+ $("ttl").textContent={entry:"Shop Entry",rep:"Report",set:"Setup"}[v];
+ $("app").className="";
+ if(v==="rep"){fillFilters();render()}else if(v==="set")renderSet();else fillLists();
+}
+$("bg").onclick=function(){$("app").className="open"};
+$("sc").onclick=function(){$("app").className=""};
+$("m-entry").onclick=function(){show("entry")};
+$("m-rep").onclick=function(){show("rep")};
+$("m-set").onclick=function(){show("set")};
+$("v-set").onclick=function(e){var b=e.target.closest("button");if(!b)return;var k=b.getAttribute("data-k"),s=sload();if(b.hasAttribute("data-i")){s[k].splice(+b.getAttribute("data-i"),1);sstore(s);renderSet();return}var inp=$("s-"+k),v=inp.value.trim();if(!v)return;if(k==="dr"){var d=$("s-drdepo").value;if(!d){toast("Pehle Depo select karein");return}if(s.dr.some(function(x){return x.n===v&&x.d===d})){toast("Pehle se majood hai");return}s.dr.push({n:v,d:d})}else{if(s[k].indexOf(v)>=0){toast("Pehle se majood hai");return}s[k].push(v)}sstore(s);inp.value="";renderSet()};
+$("v-set").onkeydown=function(e){if(e.key==="Enter"&&e.target.tagName==="INPUT"){e.preventDefault();e.target.parentNode.querySelector("button").click()}};
+["r-date","r-depo","r-dr","r-beat"].forEach(function(i){$(i).onchange=render});
+$("r-q").oninput=render;
+
+$("f-cnic").oninput=function(){
+ var v=this.value.replace(/\D/g,"").slice(0,13),o=v;
+ if(v.length>12)o=v.slice(0,5)+"-"+v.slice(5,12)+"-"+v.slice(12);
+ else if(v.length>5)o=v.slice(0,5)+"-"+v.slice(5);
+ this.value=o;
+};
+$("f-mob").oninput=function(){this.value=this.value.replace(/\D/g,"").slice(0,11)};
+
+$("save").onclick=function(){
+ var r={date:$("f-date").value,depo:$("f-depo").value.trim(),dr:$("f-dr").value.trim(),beat:$("f-beat").value.trim(),shop:$("f-shop").value.trim(),addr:$("f-addr").value.trim(),mob:$("f-mob").value.trim(),cnic:$("f-cnic").value.trim(),lat:$("f-lat").value,lng:$("f-lng").value,photo:photo,rem:$("f-rem").value.trim()};
+ if(!r.date||!r.depo||!r.dr||!r.beat||!r.shop){toast("Date, Depo, Dr Name, Beat aur Shop Name zaroori hain");return}
+ if(r.mob&&r.mob.length!==11){toast("Mobile 11 digits ka hona chahiye");return}
+ if(r.cnic&&r.cnic.replace(/\D/g,"").length!==13){toast("CNIC 13 digits ka hona chahiye");return}
+ addShop(r);
+ ["f-shop","f-addr","f-mob","f-cnic","f-rem"].forEach(function(i){$(i).value=""});$("f-addr").style.height="";$("f-rem").style.height="";setPhoto("");["depo","dr","beat"].forEach(function(k){if(!$("k-"+k).checked)$("f-"+k).value=""});
+ fillLists();toast("Save ho gaya");$("f-shop").focus();
+};
+$("f-depo").onchange=function(){$("f-dr").value="";fillLists()};
+$("f-addr").oninput=function(){this.style.height="auto";this.style.height=this.scrollHeight+2+"px"};
+$("f-rem").oninput=$("f-addr").oninput;
+function pad(n){return String(n).padStart(2,"0")}
+async function gps(){
+ var G=window.Capacitor&&window.Capacitor.Plugins&&window.Capacitor.Plugins.Geolocation;
+ $("rf").textContent="...";
+ try{
+  var la,lo,p;
+  if(G){try{await G.requestPermissions()}catch(e){}p=await G.getCurrentPosition({enableHighAccuracy:true,timeout:15000})}
+  else{if(!navigator.geolocation)throw new Error("nogps");p=await new Promise(function(ok,no){navigator.geolocation.getCurrentPosition(ok,no,{enableHighAccuracy:true,timeout:15000,maximumAge:0})})}
+  la=p.coords.latitude;lo=p.coords.longitude;
+  $("f-lat").value=la.toFixed(6);$("f-lng").value=lo.toFixed(6);
+  var d=new Date();$("lu").innerHTML="Last update<br>"+pad(d.getDate())+"-"+pad(d.getMonth()+1)+"-"+d.getFullYear()+"<br>"+pad(d.getHours())+":"+pad(d.getMinutes())+":"+pad(d.getSeconds());
+ }catch(e){toast("Location nahi mili, GPS/permission check karein")}
+ $("rf").textContent="Refresh";
+}
+async function mapFill(){
+ var la=$("f-lat").value,lo=$("f-lng").value;
+ if(!la||!lo)return;
+ toast("Map se shop ka data utha raha hoon...");
+ var name="",addr="";
+ try{
+  var r=await fetch("https://nominatim.openstreetmap.org/reverse?format=jsonv2&addressdetails=1&zoom=18&accept-language=en&lat="+la+"&lon="+lo);
+  var j=await r.json();
+  var a=j.address||{};
+  var parts=[a.house_number,a.road,a.neighbourhood||a.suburb||a.quarter,a.city||a.town||a.village||a.county].filter(Boolean);
+  addr=parts.length?parts.join(", "):(j.display_name||"");
+  if(j.name&&(j.category==="shop"||j.category==="amenity"||j.category==="office"))name=j.name;
+ }catch(e){}
+ if(!name){
+  try{
+   var qy='[out:json][timeout:10];(node(around:40,'+la+','+lo+')["name"]["shop"];node(around:40,'+la+','+lo+')["name"]["amenity"];way(around:40,'+la+','+lo+')["name"]["shop"];);out center 10;';
+   var r2=await fetch("https://overpass-api.de/api/interpreter",{method:"POST",body:"data="+encodeURIComponent(qy),headers:{"Content-Type":"application/x-www-form-urlencoded"}});
+   var j2=await r2.json(),best=null,bd=1e9;
+   (j2.elements||[]).forEach(function(e){var y=e.lat!=null?e.lat:(e.center&&e.center.lat),x=e.lon!=null?e.lon:(e.center&&e.center.lon);if(y==null||x==null)return;var dd=Math.pow(y-la,2)+Math.pow((x-lo)*Math.cos(la*Math.PI/180),2);if(dd<bd){bd=dd;best=e}});
+   if(best&&best.tags&&best.tags.name)name=best.tags.name;
+  }catch(e){}
+ }
+ if(name&&!$("f-shop").value.trim())$("f-shop").value=name;
+ if(addr&&!$("f-addr").value.trim()){$("f-addr").value=addr;$("f-addr").oninput.call($("f-addr"))}
+ toast(name?"Shop name aur address bhar diya":addr?"Address bhar diya, shop ka name map me nahi mila":"Map se data nahi mila");
+}
+var photo="";
+function setPhoto(u){photo=u||"";var im=$("pimg");if(photo){im.src=photo;im.className="";$("ptx").className="hide"}else{im.removeAttribute("src");im.className="hide";$("ptx").className=""}}
+function shrink(s,cb){var im=new Image();im.onload=function(){var sc=Math.min(1,640/Math.max(im.width,im.height)),c=document.createElement("canvas");c.width=Math.round(im.width*sc);c.height=Math.round(im.height*sc);c.getContext("2d").drawImage(im,0,0,c.width,c.height);cb(c.toDataURL("image/jpeg",0.6))};im.onerror=function(){cb("")};im.src=s}
+$("pic").onclick=async function(){
+ var C=window.Capacitor&&window.Capacitor.Plugins&&window.Capacitor.Plugins.Camera;
+ if(C){try{var r=await C.getPhoto({quality:60,allowEditing:false,resultType:"dataUrl",source:"CAMERA"});shrink(r.dataUrl,setPhoto);await gps();await mapFill()}catch(e){if(String(e&&e.message||e).toLowerCase().indexOf("cancel")<0)toast("Camera open nahi hua")}}
+ else $("pfile").click();
+};
+$("pfile").onchange=function(){var f=this.files&&this.files[0];if(!f)return;var rd=new FileReader();rd.onload=function(){shrink(rd.result,setPhoto)};rd.readAsDataURL(f);this.value=""};
+$("rf").onclick=gps;
+async function saveFile(fn,b64){
+ var P=window.Capacitor&&window.Capacitor.Plugins,FS=P&&P.Filesystem,SH=P&&P.Share;
+ if(FS&&SH){var r=await FS.writeFile({path:fn,data:b64,directory:"CACHE",recursive:true});await SH.share({title:fn,dialogTitle:"Excel file",url:r.uri});return}
+ var bin=atob(b64),u=new Uint8Array(bin.length);for(var i=0;i<bin.length;i++)u[i]=bin.charCodeAt(i);
+ var url=URL.createObjectURL(new Blob([u]));var a=document.createElement("a");a.href=url;a.download=fn;document.body.appendChild(a);a.click();a.remove();setTimeout(function(){URL.revokeObjectURL(url)},3000);
+}
+$("ex").onclick=async function(){
+ var rows=curRows;
+ if(!rows.length){toast("Export ke liye record nahi hain");return}
+ var head=["Sr","Date","Shop Name","Address","Mobile","CNIC","Depo","Dr Name","Beat","Latitude","Longitude","Remarks"];
+ var data=rows.map(function(x,i){return [i+1,x.date||"",x.shop||"",x.addr||"",x.mob||"",x.cnic||"",x.depo||"",x.dr||"",x.beat||"",x.lat||"",x.lng||"",x.rem||""]});
+ var fn="shop-report-"+today()+".xlsx",b64;
+ try{
+  if(window.XLSX){var ws=XLSX.utils.aoa_to_sheet([head].concat(data));ws["!cols"]=[{wch:5},{wch:12},{wch:22},{wch:30},{wch:14},{wch:18},{wch:14},{wch:18},{wch:8},{wch:12},{wch:12},{wch:24}];var wb=XLSX.utils.book_new();XLSX.utils.book_append_sheet(wb,ws,"Report");b64=XLSX.write(wb,{bookType:"xlsx",type:"base64"})}
+  else{var csv="\ufeff"+[head].concat(data).map(function(r){return r.map(function(c){return '"'+String(c).replace(/"/g,'""')+'"'}).join(",")}).join("\r\n");b64=btoa(unescape(encodeURIComponent(csv)));fn=fn.replace(".xlsx",".csv")}
+  await saveFile(fn,b64);
+ }catch(e){var m=String(e&&e.message||e).toLowerCase();if(m.indexOf("cancel")<0)toast("Export nahi ho saka")}
+};
+$("f-date").value=today();
+gps();
+dbInit().then(function(){fillLists()});
+})();
+</script>
+</body>
+</html>
